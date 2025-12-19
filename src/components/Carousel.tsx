@@ -1,6 +1,7 @@
 // src/components/Carousel.tsx
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 interface Product {
     id: number;
@@ -55,7 +56,11 @@ export default function Carousel({
     const goToSlide = (index: number) => setCurrent(index);
 
     return (
-        <div className="relative w-full mx-auto overflow-hidden rounded-xl pb-10">
+        <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.5 }} className="relative w-full mx-auto overflow-hidden rounded-xl pb-10">
             {/* Slides container */}
             <div className="flex justify-between">
                 <div className="relative inline-block
@@ -91,6 +96,7 @@ export default function Carousel({
                         {slide.map((product) => (
                             <div
                                 key={product.id}
+                                onClick={() => navigate(`/product/${product.id}`)}
                                 className="bg-white rounded-xl p-4 flex flex-col items-center transform hover:scale-105 transition-all duration-300 cursor-pointer border border-gray-200 hover:border-green-500">
                                 <img
                                     src={product.image}
@@ -129,6 +135,6 @@ export default function Carousel({
                     />
                 ))}
             </div>
-        </div>
+        </motion.div>
     );
 }

@@ -2,6 +2,7 @@ import CarouselSlider from "../components/CarouselSlider";
 import Carousel from "../components/Carousel";
 import CarouselSlider2 from "../components/CarouselSlider2";
 import ProductCard from "../components/ProductCard";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { getProducts } from "../api";
 
@@ -31,15 +32,18 @@ export default function Home() {
         { id: 14, name: "Hand Sanitizer", price: "RM 20", image: "https://www.bigpharmacy.com.my/site_media/img/125539EA-9314057015063_DifflamHextra-Front_20230824181440_bigpharmacy.png" },
         { id: 15, name: "Hand Sanitizer", price: "RM 10", image: "https://aapharmacy.com.my/cdn/shop/files/Slide1_4ef78735-81e4-4295-b7aa-c8b552fa54ee_533x.jpg?v=1715758350" },
         { id: 16, name: "Hand Sanitizer", price: "RM 10", image: "https://aapharmacy.com.my/cdn/shop/files/ssmy.zone-1763624199-Slide7_533x.jpg?v=1763624357" },
+        { id: 17, name: "Hand Sanitizer", price: "RM 7", image: "https://filebroker-cdn.lazada.com.my/kf/S585ccc3298414013a0dd628bc289e570U.jpg" },
+        { id: 18, name: "Hand Sanitizer", price: "RM 20", image: "https://www.bigpharmacy.com.my/site_media/img/125539EA-9314057015063_DifflamHextra-Front_20230824181440_bigpharmacy.png" },
+        { id: 19, name: "Hand Sanitizer", price: "RM 10", image: "https://aapharmacy.com.my/cdn/shop/files/Slide1_4ef78735-81e4-4295-b7aa-c8b552fa54ee_533x.jpg?v=1715758350" },
+        { id: 20, name: "Hand Sanitizer", price: "RM 10", image: "https://aapharmacy.com.my/cdn/shop/files/ssmy.zone-1763624199-Slide7_533x.jpg?v=1763624357" },
     ];
-
 
     useEffect(() => {
         getProducts().then(setProducts);
     }, []);
 
     return (
-        <div className="w-full max-w-7xl mx-auto">
+        <div className="w-full max-w-7xl mx-auto bg-white">
             <main className="p-6 space-y-10 w-full">
                 {/* <Carousel /> */}
 
@@ -49,12 +53,16 @@ export default function Home() {
 
                 <CarouselSlider2 items={productsshow} itemsPerSlide={5} interval={3000} />
 
-                <section>
+                <motion.section
+                    initial={{ opacity: 0, y: -50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ type: "spring", stiffness: 100, damping: 10 }}>
                     <h2 className="text-2xl font-bold mb-4">Featured Products</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {products.map((p) => <ProductCard key={p.id} product={p} />)}
                     </div>
-                </section>
+                </motion.section>
             </main>
         </div>
     );

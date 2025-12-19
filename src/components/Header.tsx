@@ -1,12 +1,15 @@
 // src/components/Header.tsx
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SearchBar from "./SearchBar";
+import { useCart } from "../context/CartContext";
 import { Menu, X, ShoppingCart, MapPin, User } from "lucide-react";
 
 export default function Header() {
+    const navigate = useNavigate();
     const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
     const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+    const { cartCount } = useCart();
 
     const pageLinks = [
         { label: "Home", to: "/" },
@@ -42,12 +45,14 @@ export default function Header() {
                             <button className="px-4 py-2 border border-green-600 text-green-600 rounded-lg font-semibold hover:bg-green-50 transition">
                                 Register
                             </button>
-                            <button className="relative p-2 rounded-lg hover:bg-green-50 transition">
+                            <div className="relative p-2 rounded-lg hover:bg-green-50 transition" onClick={() => navigate("/cart")}>
                                 <ShoppingCart size={24} className="text-green-600" />
-                                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
-                                    3
-                                </span>
-                            </button>
+                                {cartCount > 0 &&
+                                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
+                                        {cartCount}
+                                    </span>
+                                }
+                            </div>
                             <button className="p-2 rounded-lg hover:bg-green-50 transition">
                                 <MapPin size={24} className="text-green-600" />
                             </button>
@@ -111,11 +116,13 @@ export default function Header() {
                         </div>
 
                         {/* Shopping Cart Button */}
-                        <button className="p-2 rounded-md bg-white text-green-600 hover:bg-green-100 transition relative">
+                        <button className="p-2 rounded-md bg-white text-green-600 hover:bg-green-100 transition relative" onClick={() => navigate("/cart")}>
                             <ShoppingCart size={24} />
-                            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
-                                3
-                            </span>
+                            {cartCount > 0 &&
+                                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
+                                    {cartCount}
+                                </span>
+                            }
                         </button>
 
                         {/* Location Button */}

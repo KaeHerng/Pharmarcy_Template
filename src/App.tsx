@@ -3,6 +3,8 @@ import Home from "./pages/Home";
 import Category from "./pages/Category";
 import Layout from "./layouts/layout";
 import ProductShareLayout from "./pages/ProductShareLayout";
+import Productdetails from "./pages/product";
+import Cart from "./pages/Cart";
 
 export default function App() {
   return (
@@ -10,6 +12,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Layout><Home /></Layout>} />
         <Route path="/category/:id" element={<Layout><Category /></Layout>} />
+        <Route path="/cart" element={<Layout><Cart /></Layout>} />
+        <Route path="/product/:id" element={<Layout><Productdetails /></Layout>} />
         <Route path="/ProductShareLayout/:category" element={<Layout><ProductShareLayout /></Layout>} />
       </Routes>
     </BrowserRouter>

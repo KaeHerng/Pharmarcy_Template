@@ -1,6 +1,7 @@
 // src/components/Carousel.tsx
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 interface Product {
     id: number;
@@ -86,7 +87,12 @@ export default function Carousel({
     };
 
     return (
-        <div className="relative w-full mx-auto overflow-hidden rounded-xl pb-10">
+        <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.5 }}
+            className="relative w-full mx-auto overflow-hidden rounded-xl pb-10">
             {/* ===== Title ===== */}
             <div className="flex justify-between mb-2">
                 <div className="relative inline-block
@@ -110,7 +116,7 @@ export default function Carousel({
                   after:left-0 after:bottom-0
                   cursor-pointer hover:scale-103 transition-all duration-200
                   after:bg-gradient-to-r after:from-green-600 after:to-green-400
-                " onClick={() => handleViewMore("medical-care")}>
+                " onClick={() => handleViewMore("Skin-care")}>
                     {`VIEW MORE >`}
                 </div>
             </div>
@@ -133,6 +139,7 @@ export default function Carousel({
                 {items.map((product) => (
                     <div
                         key={product.id}
+                        onClick={() => navigate(`/product/${product.id}`)}
                         className="flex-shrink-0 px-3"
                         style={{ width: `${100 / itemsPerSlide}%` }}
                     >
@@ -181,7 +188,7 @@ export default function Carousel({
                     />
                 ))}
             </div>
-        </div>
+        </motion.div>
     );
 }
 

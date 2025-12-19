@@ -1,5 +1,6 @@
 // src/components/Carousel.tsx
 import React, { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 
 interface CarouselProps {
     images: string[]; // Array of image URLs
@@ -33,7 +34,11 @@ export default function CarouselSlider({ images, autoPlay = true, interval = 300
     const prevSlide = () => setCurrent((current - 1 + length) % length);
 
     return (
-        <div className="relative w-full mx-auto overflow-hidden rounded-lg shadow-lg h-70">
+        <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.5 }} className="relative w-full mx-auto overflow-hidden rounded-lg shadow-lg h-70">
             {/* Images */}
             <div className="flex transition-transform duration-500" style={{ transform: `translateX(-${current * 100}%)` }}>
                 {images.map((img, index) => (
@@ -44,14 +49,12 @@ export default function CarouselSlider({ images, autoPlay = true, interval = 300
             {/* Arrows */}
             <button
                 className="absolute top-1/2 left-2 -translate-y-1/2 bg-white bg-opacity-70 p-2 rounded-full hover:bg-opacity-100"
-                onClick={prevSlide}
-            >
+                onClick={prevSlide}>
                 &#8592;
             </button>
             <button
                 className="absolute top-1/2 right-2 -translate-y-1/2 bg-white bg-opacity-70 p-2 rounded-full hover:bg-opacity-100"
-                onClick={nextSlide}
-            >
+                onClick={nextSlide}>
                 &#8594;
             </button>
 
@@ -65,6 +68,6 @@ export default function CarouselSlider({ images, autoPlay = true, interval = 300
                     />
                 ))}
             </div>
-        </div>
+        </motion.div>
     );
 }
