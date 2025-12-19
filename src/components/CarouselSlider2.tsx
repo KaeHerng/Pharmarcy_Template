@@ -36,7 +36,7 @@ export default function Carousel({
         if (!autoPlay || length <= itemsPerSlide) return;
 
         timeoutRef.current = window.setTimeout(() => {
-            setCurrent((prev) => (prev + 1) % length);
+            setCurrent((prev) => (prev === length - 5 ? 0 : prev + 1) % length);
         }, interval);
 
         return () => {
@@ -45,9 +45,13 @@ export default function Carousel({
     }, [current, autoPlay, interval, length, itemsPerSlide]);
 
     // ================ controls =================
-    const nextSlide = () => setCurrent((prev) => (prev + 1) % length);
-    const prevSlide = () =>
-        setCurrent((prev) => (prev - 1 + length) % length);
+    const nextSlide = () => {
+        setCurrent((prev) => (prev === length - 5 ? 0 : prev + 1));
+    };
+
+    const prevSlide = () => {
+        setCurrent((prev) => (prev === 0 ? length - 1 : prev - 1));
+    };
     const goToSlide = (pageIndex: number) => {
         setCurrent(pageIndex * itemsPerSlide);
     };
@@ -82,10 +86,6 @@ export default function Carousel({
         isDraggingRef.current = false;
     };
 
-    const handleViewMore = (category: string) => {
-        navigate(`/ProductShareLayout/${category}`);
-    };
-
     return (
         <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -93,33 +93,6 @@ export default function Carousel({
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.5 }}
             className="relative w-full mx-auto overflow-hidden rounded-xl pb-10">
-            {/* ===== Title ===== */}
-            <div className="flex justify-between mb-2">
-                <div className="relative inline-block
-                  text-lg font-bold
-                  bg-gradient-to-r from-green-600 to-green-400
-                  bg-clip-text text-transparent
-                  after:content-['']
-                  after:absolute
-                  after:left-0 after:bottom-0
-                  after:h-[2px] after:w-full
-                  after:bg-gradient-to-r after:from-green-600 after:to-green-400
-                ">
-                    New Arrival
-                </div>
-                <div className="relative inline-block
-                  text-lg font-bold
-                  bg-gradient-to-r from-green-600 to-green-400
-                  bg-clip-text text-transparent
-                  after:content-['']
-                  after:absolute
-                  after:left-0 after:bottom-0
-                  cursor-pointer hover:scale-103 transition-all duration-200
-                  after:bg-gradient-to-r after:from-green-600 after:to-green-400
-                " onClick={() => handleViewMore("Skin-care")}>
-                    {`VIEW MORE >`}
-                </div>
-            </div>
 
             {/* ===== Slides container ===== */}
             <div

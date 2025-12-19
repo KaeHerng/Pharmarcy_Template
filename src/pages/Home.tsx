@@ -4,10 +4,12 @@ import CarouselSlider2 from "../components/CarouselSlider2";
 import ProductCard from "../components/ProductCard";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getProducts } from "../api";
 
 export default function Home() {
     const [products, setProducts] = useState<any[]>([]);
+    const navigate = useNavigate();
 
     const images = [
         "https://t4.ftcdn.net/jpg/02/27/41/31/360_F_227413125_c5CgAhRF9FVpEYKzckx8le5cSMpYx9YP.jpg",
@@ -38,21 +40,125 @@ export default function Home() {
         { id: 20, name: "Hand Sanitizer", price: "RM 10", image: "https://aapharmacy.com.my/cdn/shop/files/ssmy.zone-1763624199-Slide7_533x.jpg?v=1763624357" },
     ];
 
+    const healthfood = [
+        { id: 1, name: "Supplement-DM", price: "RM 58", image: "https://aapharmacy.com.my/cdn/shop/files/Slide1_43fed115-19e4-4f7c-872f-3b551671cc9d_533x.jpg?v=1763514239" },
+        { id: 2, name: "Supplement-DM", price: "RM 88", image: "https://aapharmacy.com.my/cdn/shop/files/Slide4_2ca5e9b6-3ba3-4749-8bca-898471591841_533x.jpg?v=1738593284" },
+        { id: 3, name: "Supplement-DM", price: "RM 100", image: "https://aapharmacy.com.my/cdn/shop/files/Slide4_283fd669-4d36-4ad1-8b4a-356bc6a7f24a_533x.jpg?v=1734335909" },
+        { id: 4, name: "Supplement-DM", price: "RM 45", image: "https://aapharmacy.com.my/cdn/shop/files/ssmy.zone-1719994188-Slide7.jpg?v=1719995116" },
+        { id: 5, name: "Supplement-DM", price: "RM 77", image: "https://www.bigpharmacy.com.my/site_media/img/10011262_EA_bigpharmacy.png9" },
+        { id: 6, name: "Supplement-DM", price: "RM 88", image: "https://aapharmacy.com.my/cdn/shop/files/ssmy.zone-1740714698-Slide1_533x.jpg?v=1740715292" },
+        { id: 7, name: "Supplement-DM", price: "RM 88", image: "https://aapharmacy.com.my/cdn/shop/files/Slide1_82923ada-a724-4da9-b82e-a3de77c175d1_533x.jpg?v=1721177296" },
+        { id: 8, name: "GINGEN with Honey", price: "RM 40", image: "https://aapharmacy.com.my/cdn/shop/files/Slide7_32b5530c-86ef-4fad-bace-1b5d395849c1_533x.jpg?v=1724661945" },
+    ]
+
     useEffect(() => {
         getProducts().then(setProducts);
     }, []);
 
+    const handleViewMore = (category: string) => {
+        navigate(`/ProductShareLayout/${category}`);
+    };
+
     return (
-        <div className="w-full max-w-7xl mx-auto bg-white">
-            <main className="p-6 space-y-10 w-full">
+        // <div className="w-full max-w-7xl mx-auto bg-white">
+        <div className="w-[80%] mx-auto bg-white">
+            <main className="p-6 space-y-5 w-full">
                 {/* <Carousel /> */}
 
                 <CarouselSlider images={images} interval={4000} />
 
                 <Carousel items={productsshow} itemsPerSlide={5} interval={3000} />
 
-                <CarouselSlider2 items={productsshow} itemsPerSlide={5} interval={3000} />
+                <div>
+                    <div className="flex justify-between mb-2">
+                        <div className="relative inline-block
+                          text-lg font-bold
+                          bg-gradient-to-r from-green-600 to-green-400
+                          bg-clip-text text-transparent
+                          after:content-['']
+                          after:absolute
+                          after:left-0 after:bottom-0
+                          after:h-[2px] after:w-full
+                          after:bg-gradient-to-r after:from-green-600 after:to-green-400
+                        ">
+                            New Arrival
+                        </div>
+                        <div className="relative inline-block
+                          text-lg font-bold
+                          bg-gradient-to-r from-green-600 to-green-400
+                          bg-clip-text text-transparent
+                          after:content-['']
+                          after:absolute
+                          after:left-0 after:bottom-0
+                          cursor-pointer hover:scale-103 transition-all duration-200
+                          after:bg-gradient-to-r after:from-green-600 after:to-green-400
+                        " onClick={() => handleViewMore("Skin-care")}>
+                            {`VIEW MORE >`}
+                        </div>
+                    </div>
+                    <CarouselSlider2 items={productsshow} itemsPerSlide={5} interval={3000} />
+                </div>
 
+                <div>
+                    <div className="flex justify-between mb-2">
+                        <div className="relative inline-block
+                          text-lg font-bold
+                          bg-gradient-to-r from-green-600 to-green-400
+                          bg-clip-text text-transparent
+                          after:content-['']
+                          after:absolute
+                          after:left-0 after:bottom-0
+                          after:h-[2px] after:w-full
+                          after:bg-gradient-to-r after:from-green-600 after:to-green-400
+                        ">
+                            Health Food
+                        </div>
+                        <div className="relative inline-block
+                          text-lg font-bold
+                          bg-gradient-to-r from-green-600 to-green-400
+                          bg-clip-text text-transparent
+                          after:content-['']
+                          after:absolute
+                          after:left-0 after:bottom-0
+                          cursor-pointer hover:scale-103 transition-all duration-200
+                          after:bg-gradient-to-r after:from-green-600 after:to-green-400
+                        " onClick={() => handleViewMore("Skin-care")}>
+                            {`VIEW MORE >`}
+                        </div>
+                    </div>
+                    <motion.div
+                        initial={{ opacity: 0, rotateY: 90 }}
+                        whileInView={{ opacity: 1, rotateY: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.7, ease: "easeOut" }}
+                        className="grid grid-cols-3 flex flex-row">
+                        <div>
+                            <img
+                                src={'https://www.bigpharmacy.com.my/site_media/img/banners/Mailer_E-Store_banner_750px__w__x_452px__h__FA_-_Big_20251201142441.png'}
+                                alt={'poster2'}
+                                className="w-full h-40 sm:h-48 md:h-75 object-cover mb-3 select-none"
+                                draggable={false}
+                            />
+                        </div>
+                        <div>
+                            <img
+                                src={'https://www.bigpharmacy.com.my/site_media/img/banners/BCG_Year_Ed_Sale_Web_Banner_20251201144019.jpg'}
+                                alt={'poster1'}
+                                className="w-full h-40 sm:h-48 md:h-75 object-cover mb-3 select-none"
+                                draggable={false}
+                            />
+                        </div>
+                        <div>
+                            <img
+                                src={'https://www.bigpharmacy.com.my/site_media/img/banners/Big_Year_End_Mailer_-_Web_Banner__Desktop___Mobile___1250px_x_750px__20251201143209.png'}
+                                alt={'poster3'}
+                                className="w-full h-40 sm:h-48 md:h-75 object-cover mb-3 select-none"
+                                draggable={false}
+                            />
+                        </div>
+                    </motion.div>
+                    <CarouselSlider2 items={healthfood} itemsPerSlide={5} interval={3000} />
+                </div>
                 <motion.section
                     initial={{ opacity: 0, y: -50 }}
                     whileInView={{ opacity: 1, y: 0 }}
