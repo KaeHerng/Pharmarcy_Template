@@ -41,6 +41,8 @@ export default function Header() {
         // 如果 About Us 或其他没有子菜单，就不定义
     };
 
+    const Card1 = "https://www.visa.co.in/dam/VCOM/regional/ap/india/global-elements/images/in-visa-gold-card-498x280.png"
+
     return (
         <header className="w-full z-[100] fixed top-0 left-0">
             {/* Desktop Version */}
@@ -85,10 +87,12 @@ export default function Header() {
                         className="bg-gradient-to-r from-green-600 to-green-400 relative"
                         onMouseLeave={() => setActiveDropdown(null)}>
                         <div className="max-w-[1600px] mx-auto flex justify-center p-3 space-x-8 text-white font-semibold">
-                            {pageLinks.map((link) => (
-                                <Link
+                            {pageLinks.map((link) => {
+                                const hasSubmenu = subPageLinks[link.label]; 
+                                return(
+                                    <Link
                                     key={link.to}
-                                    to={link.to}
+                                    to={hasSubmenu ? '' : link.to}
                                     onMouseEnter={() => setActiveDropdown(link.label)}
                                     className="hover:text-yellow-300 transition-colors duration-200 relative py-1">
                                     {link.label}
@@ -97,7 +101,8 @@ export default function Header() {
                                         <motion.div layoutId="navline" className="absolute bottom-0 left-0 w-full h-0.5 bg-yellow-300" />
                                     )}
                                 </Link>
-                            ))}
+                                )
+                            })}
                         </div>
 
                         {/* Full Page Dropdown Menu */}
@@ -112,7 +117,6 @@ export default function Header() {
                                         className="fixed inset-0 top-[115px] bg-black/50 backdrop-blur-sm z-[-1]"
                                     />
 
-                                    {/* 子菜单内容盒 */}
                                     <motion.div
                                         initial={{ opacity: 0, y: -30, scale: 0.98 }}
                                         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -126,7 +130,7 @@ export default function Header() {
                                             <div className="grid grid-cols-4 gap-8">
                                                 <div className="col-span-1">
                                                     <h3 className="text-2xl font-bold text-green-600 mb-2">{activeDropdown}</h3>
-                                                    <p className="text-gray-200 text-sm">Discover our {activeDropdown.toLowerCase()} and services tailored for you.</p>
+                                                    <p className="text-gray-200 text-md">Discover our {activeDropdown.toLowerCase()} and services tailored for you.</p>
                                                 </div>
 
                                                 <div>
@@ -135,17 +139,42 @@ export default function Header() {
                                                             key={sub.to}
                                                             to={sub.to}
                                                             onClick={() => setActiveDropdown(null)}
-                                                            className="flex items-center justify-between p-2 rounded-xl hover:text-white transition-all group relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-current after:transition-all after:duration-300 hover:after:w-full">
-                                                            <span className="text-gray-200 font-medium group-hover:text-green-600">{sub.label}</span>
+                                                            className="flex items-center justify-between p-2 rounded-xl transition-all group">
+                                                            <span className="relative inline-block text-gray-400 hover:text-white text-[23px] after:content-['']
+                                                                after:absolute after:left-0 after:-bottom-1 after:h-[2px] 
+                                                                after:w-0 after:bg-current after:transition-all 
+                                                                after:duration-300 group-hover:after:w-full">
+                                                                {sub.label}
+                                                            </span>
                                                         </Link>
                                                     ))}
                                                 </div>
                                             </div>
                                             <button
-                                                onClick={() => setActiveDropdown(null)}
-                                                className="absolute top-0 right-0 text-gray-400 hover:text-green-600 transition">
-                                                <X size={28} />
+                                              onClick={() => setActiveDropdown(null)}
+                                              className="absolute top-0 right-2 text-gray-400 hover:text-green-600 transition cursor-pointer z-10">
+                                              <X size={38} />
                                             </button>
+                                            {/* <div className="relative flex flex-col gap-2">
+                                              <button
+                                                onClick={() => setActiveDropdown(null)}
+                                                className="absolute top-0 right-2 text-gray-400 hover:text-green-600 transition cursor-pointer z-10">
+                                                <X size={38} />
+                                              </button>
+                                                                                            
+                                              <img
+                                                src={Card1}
+                                                alt="Card1"
+                                                draggable="false"
+                                                className="w-full max-w-full object-cover pointer-events-none select-none rounded-lg mt-15"
+                                              />
+                                              <img
+                                                src={Card1}
+                                                alt="Card1"
+                                                draggable="false"
+                                                className="w-full max-w-full object-cover pointer-events-none select-none rounded-lg"
+                                              />
+                                            </div> */}
                                         </div>
                                     </motion.div>
                                 </>
@@ -202,63 +231,62 @@ export default function Header() {
                                 </button>
                                 <ul className="flex flex-col gap-4">
                                     {pageLinks.map((link) => {
-                                      const hasSubmenu = subPageLinks[link.label];
+                                        const hasSubmenu = subPageLinks[link.label];
 
-                                      return (
-                                        <li key={link.to}>
-                                          {/* 主菜单 */}
-                                          <button
-                                            onClick={() => {
-                                              if (hasSubmenu) {
-                                                setMobileOpenSubmenu(
-                                                  mobileOpenSubmenu === link.label ? null : link.label
-                                                );
-                                              } else {
-                                                navigate(link.to);
-                                                setMobileSidebarOpen(false);
-                                              }
-                                            }}
-                                            className="w-full flex items-center justify-between text-gray-800 text-lg font-semibold py-2 hover:text-green-600 transition"
-                                          >
-                                            <span>{link.label}</span>
-                                        
-                                            {hasSubmenu && (
-                                              <ChevronRight
-                                                size={20}
-                                                className={`transition-transform duration-300 ${
-                                                  mobileOpenSubmenu === link.label ? "rotate-90" : ""
-                                                }`}
-                                              />
-                                            )}
-                                          </button>
-                                        
-                                          {/* 子菜单 */}
-                                          <AnimatePresence>
-                                            {hasSubmenu && mobileOpenSubmenu === link.label && (
-                                              <motion.ul
-                                                initial={{ height: 0, opacity: 0 }}
-                                                animate={{ height: "auto", opacity: 1 }}
-                                                exit={{ height: 0, opacity: 0 }}
-                                                transition={{ duration: 0.25, ease: "easeOut" }}
-                                                className="ml-4 mt-2 flex flex-col gap-2 overflow-hidden">
-                                                {subPageLinks[link.label].map((sub) => (
-                                                  <li key={sub.to}>
-                                                    <Link
-                                                      to={sub.to}
-                                                      onClick={() => {
-                                                        setMobileSidebarOpen(false);
-                                                        setMobileOpenSubmenu(null);
-                                                      }}
-                                                      className="block text-gray-600 hover:text-green-600 transition">
-                                                      {sub.label}
-                                                    </Link>
-                                                  </li>
-                                                ))}
-                                              </motion.ul>
-                                            )}
-                                          </AnimatePresence>
-                                        </li>
-                                      );
+                                        return (
+                                            <li key={link.to}>
+                                                {/* 主菜单 */}
+                                                <button
+                                                    onClick={() => {
+                                                        if (hasSubmenu) {
+                                                            setMobileOpenSubmenu(
+                                                                mobileOpenSubmenu === link.label ? null : link.label
+                                                            );
+                                                        } else {
+                                                            navigate(link.to);
+                                                            setMobileSidebarOpen(false);
+                                                        }
+                                                    }}
+                                                    className="w-full flex items-center justify-between text-gray-800 text-lg font-semibold py-2 hover:text-green-600 transition"
+                                                >
+                                                    <span>{link.label}</span>
+
+                                                    {hasSubmenu && (
+                                                        <ChevronRight
+                                                            size={20}
+                                                            className={`transition-transform duration-300 ${mobileOpenSubmenu === link.label ? "rotate-90" : ""
+                                                                }`}
+                                                        />
+                                                    )}
+                                                </button>
+
+                                                {/* 子菜单 */}
+                                                <AnimatePresence>
+                                                    {hasSubmenu && mobileOpenSubmenu === link.label && (
+                                                        <motion.ul
+                                                            initial={{ height: 0, opacity: 0 }}
+                                                            animate={{ height: "auto", opacity: 1 }}
+                                                            exit={{ height: 0, opacity: 0 }}
+                                                            transition={{ duration: 0.25, ease: "easeOut" }}
+                                                            className="ml-4 mt-2 flex flex-col gap-2 overflow-hidden">
+                                                            {subPageLinks[link.label].map((sub) => (
+                                                                <li key={sub.to}>
+                                                                    <Link
+                                                                        to={sub.to}
+                                                                        onClick={() => {
+                                                                            setMobileSidebarOpen(false);
+                                                                            setMobileOpenSubmenu(null);
+                                                                        }}
+                                                                        className="block text-gray-600 hover:text-green-600 transition">
+                                                                        {sub.label}
+                                                                    </Link>
+                                                                </li>
+                                                            ))}
+                                                        </motion.ul>
+                                                    )}
+                                                </AnimatePresence>
+                                            </li>
+                                        );
                                     })}
                                 </ul>
                             </motion.div>
