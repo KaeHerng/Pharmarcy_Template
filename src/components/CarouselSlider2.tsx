@@ -80,8 +80,8 @@ export default function Carousel({
         const endX = "changedTouches" in e ? e.changedTouches[0].clientX : e.clientX;
         const diff = endX - startXRef.current;
 
-        if (diff > 50 && current > 0) prevSlide(); // swipe right → prev
-        else if (diff < -50 && current < length - itemsPerSlide) nextSlide(); // swipe left → next
+        if (diff > 50 && current > 0) prevSlide();
+        else if (diff < -50 && current < length - itemsPerSlide) nextSlide();
 
         isDraggingRef.current = false;
     };
@@ -107,20 +107,18 @@ export default function Carousel({
                 onMouseLeave={handleDragEnd}
                 onTouchStart={handleDragStart}
                 onTouchMove={handleDragMove}
-                onTouchEnd={handleDragEnd}
-            >
+                onTouchEnd={handleDragEnd}>
                 {items.map((product) => (
                     <div
                         key={product.id}
                         onClick={() => navigate(`/product/${product.id}`)}
                         className="flex-shrink-0 px-3"
-                        style={{ width: `${100 / itemsPerSlide}%` }}
-                    >
+                        style={{ width: `${100 / itemsPerSlide}%` }}>
                         <div className="bg-white rounded-xl p-4 flex flex-col items-center transform hover:scale-105 transition-all duration-300 cursor-pointer border border-gray-200 hover:border-green-500">
                             <img
                                 src={product.image}
                                 alt={product.name}
-                                className="w-full h-40 sm:h-48 md:h-56 object-cover rounded-lg mb-3 select-none"
+                                className="w-full h-35 sm:h-30 md:h-56 object-cover rounded-lg mb-3 select-none"
                                 draggable={false}
                             />
                             <div className="font-semibold text-center text-gray-800 text-lg">

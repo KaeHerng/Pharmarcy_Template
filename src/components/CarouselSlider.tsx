@@ -1,71 +1,118 @@
-// src/components/Carousel.tsx
-import React, { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { motion, useMotionValue } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface CarouselProps {
-    images: string[]; // Array of image URLs
-    autoPlay?: boolean; // auto slide
-    interval?: number; // ms
+    images: string[];
+    autoPlay?: boolean;
+    interval?: number;
 }
 
-export default function CarouselSlider({ images, autoPlay = true, interval = 3000 }: CarouselProps) {
+export default function CarouselSlider({ images, autoPlay = true, interval = 4000 }: CarouselProps) {
     const [current, setCurrent] = useState(0);
-    const timeoutRef = useRef<number | null>(null);
-
+    const [isHovered, setIsHovered] = useState(false);
     const length = images.length;
+    
+    // 增加一个引用，用于获取容器宽度
+    const containerRef = useRef<HTMLDivElement>(null);
 
-    // Auto slide
+    const nextSlide = useCallback(() => {
+        setCurrent((prev) => (prev + 1) % length);
+    }, [length]);
+
+    const prevSlide = useCallback(() => {
+        setCurrent((prev) => (prev - 1 + length) % length);
+    }, [length]);
+
     useEffect(() => {
-        if (!autoPlay) return;
-        timeoutRef.current = setTimeout(() => {
-            setCurrent((prev) => (prev + 1) % length);
-        }, interval);
+        if (!autoPlay || isHovered) return;
+        const timer = setInterval(nextSlide, interval);
+        return () => clearInterval(timer);
+    }, [nextSlide, autoPlay, interval, isHovered]);
 
-        return () => {
-            if (timeoutRef.current) clearTimeout(timeoutRef.current);
-        };
-    }, [current, autoPlay, interval, length]);
+    const handleDragEnd = (e: any, info: any) => {
+        // info.offset.x 是拖拽的距离
+        // info.velocity.x 是拖拽的速度
+        const offset = info.offset.x;
+        const velocity = info.velocity.x;
 
-    const goToSlide = (index: number) => {
-        setCurrent(index);
+        // 阈值判断：滑动超过 50px 或 速度超过 500
+        if (offset < -50 || velocity < -500) {
+            nextSlide();
+        } else if (offset > 50 || velocity > 500) {
+            prevSlide();
+        }
     };
-
-    const nextSlide = () => setCurrent((current + 1) % length);
-    const prevSlide = () => setCurrent((current - 1 + length) % length);
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.5 }} className="relative w-full mx-auto overflow-hidden rounded-lg shadow-lg h-70">
-            {/* Images */}
-            <div className="flex transition-transform duration-500" style={{ transform: `translateX(-${current * 100}%)` }}>
+            viewport={{ once: true }}
+            className="relative w-full max-w-[1400px] mx-auto overflow-hidden rounded-2xl shadow-xl group bg-slate-200"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+
+            style={{ userSelect: "none", touchAction: "pan-y" }} 
+        >
+            {/* 图片轨道容器 */}
+            <motion.div
+                ref={containerRef}
+                className="flex cursor-grab active:cursor-grabbing h-[300px] md:h-[500px] w-full"
+                drag="x"
+                // 桌面端修复：给 dragConstraints 提供一个 ref 或者设为 0
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.7}
+                onDragEnd={handleDragEnd}
+                // 使用百分比进行平滑动画
+                animate={{ x: `-${current * 100}%` }}
+                transition={{
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 30
+                }}>
                 {images.map((img, index) => (
-                    <img key={index} src={img} alt={`slide-${index}`} className="w-full flex-shrink-0 object-cover h-64 md:h-96" />
+                    <div 
+                        key={index} 
+                        className="w-full h-full flex-shrink-0">
+                        <img
+                            src={img}
+                            alt={`slide-${index}`}
+                            draggable="false" 
+                            className="w-full h-full object-cover pointer-events-none select-none"
+                        />
+                    </div>
                 ))}
+            </motion.div>
+
+            {/* 左右箭头 */}
+            <div className="absolute inset-0 flex items-center justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden md:flex pointer-events-none">
+                <button
+                    onClick={(e) => { e.stopPropagation(); prevSlide(); }}
+                    className="p-3 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/40 transition-all shadow-lg active:scale-90 pointer-events-auto"
+                >
+                    <ChevronLeft size={24} />
+                </button>
+                <button
+                    onClick={(e) => { e.stopPropagation(); nextSlide(); }}
+                    className="p-3 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/40 transition-all shadow-lg active:scale-90 pointer-events-auto"
+                >
+                    <ChevronRight size={24} />
+                </button>
             </div>
 
-            {/* Arrows */}
-            <button
-                className="absolute top-1/2 left-2 -translate-y-1/2 bg-white bg-opacity-70 p-2 rounded-full hover:bg-opacity-100"
-                onClick={prevSlide}>
-                &#8592;
-            </button>
-            <button
-                className="absolute top-1/2 right-2 -translate-y-1/2 bg-white bg-opacity-70 p-2 rounded-full hover:bg-opacity-100"
-                onClick={nextSlide}>
-                &#8594;
-            </button>
-
-            {/* Dots */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+            {/* 指示器 */}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 px-3 py-2 rounded-full bg-black/20 backdrop-blur-sm z-10">
                 {images.map((_, idx) => (
                     <button
                         key={idx}
-                        className={`w-3 h-3 rounded-full ${current === idx ? "bg-green-600" : "bg-white"}`}
-                        onClick={() => goToSlide(idx)}
-                    />
+                        onClick={() => setCurrent(idx)}
+                        className="relative h-2 transition-all duration-300"
+                    >
+                        <div className={`h-full rounded-full transition-all duration-500 ${
+                            current === idx ? "w-8 bg-green-500" : "w-2 bg-white/60 hover:bg-white"
+                        }`} />
+                    </button>
                 ))}
             </div>
         </motion.div>

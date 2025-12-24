@@ -56,11 +56,13 @@ const allProducts = [
 ];
 
 // 所有分类
-const categories = [
-    { "medical-care": ["Medical Care1", "Medical Care2", "Medical Care3"] },
-    { "skin-care": [] },
-    { "health-food": [] },
-    { "supplements": ["Supplements1", "Supplements2", "Supplements3"] },
+type CategoryObj = { [key: string]: string[] };
+
+const categories: CategoryObj[] = [
+  { "medical-care": ["Medical Care1", "Medical Care2", "Medical Care3"] },
+  { "skin-care": [] },
+  { "health-food": [] },
+  { "supplements": ["Supplements1", "Supplements2", "Supplements3"] },
 ];
 
 export default function ProductShareLayout() {
@@ -96,7 +98,7 @@ export default function ProductShareLayout() {
     const paginatedProducts = sortedProducts.slice((page - 1) * pageSize, page * pageSize);
 
     return (
-        <div className="flex flex-col md:flex-row gap-3 p-4 w-full max-w-[1300px] mx-auto">
+        <div className="flex flex-col md:flex-row gap-3 py-3 px-1 md:p-4 w-full max-w-[1300px] mx-auto">
             {/* 左边分类 */}
             <div className="md:w-1/5">
                 {/* Mobile toggle button */}

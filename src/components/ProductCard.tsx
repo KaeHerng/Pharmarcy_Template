@@ -10,7 +10,7 @@ interface Product {
 
 export default function ProductCard({ product }: { product: Product }) {
     return (
-        <div className="border p-4 rounded-lg shadow hover:shadow-lg transition">
+        <div className="border border-gray-200 p-4 rounded-lg shadow hover:shadow-lg transition">
             <img src={product.image} alt={product.name} className="w-full h-40 object-cover mb-2 rounded" />
             <h3 className="font-semibold">{product.name}</h3>
             <p className="text-green-700 font-bold">${product.price}</p>
