@@ -44,15 +44,15 @@ export default function Header() {
     const Card1 = "https://www.visa.co.in/dam/VCOM/regional/ap/india/global-elements/images/in-visa-gold-card-498x280.png"
 
     return (
-        <header className="w-full z-[100] fixed top-0 left-0">
+        <header className="w-full z-[10] fixed top-0 left-0">
             {/* Desktop Version */}
             <div className="hidden md:block shadow-lg relative z-[110]">
                 <div className="bg-white border-b border-gray-200">
                     <div className="max-w-[1600px] mx-auto relative flex items-center p-4">
                         {/* Logo */}
                         <div onClick={() => navigate("/")} className="text-2xl font-extrabold text-green-600 flex items-center gap-2 z-10 cursor-pointer">
-                            <span className="bg-green-100 text-green-600 rounded-full p-1">💊</span>
-                            KH PharmaShop
+                            <span className="bg-green-100 text-green-600 rounded-full p-1">🥭</span>
+                            KH Orchard
                         </div>
 
                         {/* Search Bar */}
@@ -188,8 +188,8 @@ export default function Header() {
             <div className="md:hidden shadow-lg">
                 <div className="bg-gradient-to-r from-green-600 to-green-400 p-4 flex justify-between items-center">
                     <div className="text-2xl font-extrabold text-white flex items-center gap-2">
-                        <span className="bg-white text-green-600 rounded-full p-1">💊</span>
-                        KH PharmaShop
+                        <span className="bg-white text-green-600 rounded-full p-1">🥭</span>
+                        KH Orchard
                     </div>
                     <div className="flex items-center gap-2 relative">
                         <div className="relative">
@@ -247,8 +247,7 @@ export default function Header() {
                                                             setMobileSidebarOpen(false);
                                                         }
                                                     }}
-                                                    className="w-full flex items-center justify-between text-gray-800 text-lg font-semibold py-2 hover:text-green-600 transition"
-                                                >
+                                                    className="w-full flex items-center justify-between text-gray-800 text-lg font-semibold py-2 hover:text-green-600 transition">
                                                     <span>{link.label}</span>
 
                                                     {hasSubmenu && (

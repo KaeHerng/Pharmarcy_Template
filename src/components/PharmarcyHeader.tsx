@@ -17,8 +17,8 @@ export default function PharmacyHeader() {
             <div className="max-w-[1600px] mx-auto flex items-center justify-between p-4">
                 {/* Left: Logo */}
                 <div className="flex items-center gap-2 text-2xl font-extrabold">
-                    <span className="bg-white text-green-600 rounded-full p-1">💊</span>
-                    KH PharmaShop
+                    <span className="bg-white text-green-600 rounded-full p-1">🥭</span>
+                    KH Orchard
                 </div>
 
                 {/* Middle: Search bar */}

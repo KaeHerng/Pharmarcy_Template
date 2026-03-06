@@ -53,8 +53,7 @@ export default function CarouselSlider({ images, autoPlay = true, interval = 400
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
 
-            style={{ userSelect: "none", touchAction: "pan-y" }} 
-        >
+            style={{ userSelect: "none", touchAction: "pan-y" }}>
             {/* 图片轨道容器 */}
             <motion.div
                 ref={containerRef}
@@ -89,26 +88,23 @@ export default function CarouselSlider({ images, autoPlay = true, interval = 400
             <div className="absolute inset-0 flex items-center justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden md:flex pointer-events-none">
                 <button
                     onClick={(e) => { e.stopPropagation(); prevSlide(); }}
-                    className="p-3 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/40 transition-all shadow-lg active:scale-90 pointer-events-auto"
-                >
+                    className="p-3 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/40 transition-all shadow-lg active:scale-90 pointer-events-auto">
                     <ChevronLeft size={24} />
                 </button>
                 <button
                     onClick={(e) => { e.stopPropagation(); nextSlide(); }}
-                    className="p-3 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/40 transition-all shadow-lg active:scale-90 pointer-events-auto"
-                >
+                    className="p-3 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/40 transition-all shadow-lg active:scale-90 pointer-events-auto">
                     <ChevronRight size={24} />
                 </button>
             </div>
 
             {/* 指示器 */}
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 px-3 py-2 rounded-full bg-black/20 backdrop-blur-sm z-10">
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 px-3 py-2 rounded-full bg-black/20 backdrop-blur-sm z-0">
                 {images.map((_, idx) => (
                     <button
                         key={idx}
                         onClick={() => setCurrent(idx)}
-                        className="relative h-2 transition-all duration-300"
-                    >
+                        className="relative h-2 transition-all duration-300">
                         <div className={`h-full rounded-full transition-all duration-500 ${
                             current === idx ? "w-8 bg-green-500" : "w-2 bg-white/60 hover:bg-white"
                         }`} />

@@ -9,7 +9,7 @@ export default function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
                     {/* Brand */}
                     <div>
-                        <h2 className="text-2xl font-bold text-white mb-4">KH PharmaShop</h2>
+                        <h2 className="text-2xl font-bold text-white mb-4">KH Orchard</h2>
                         <p className="text-gray-600">
                             Your trusted online pharmacy for health, skincare, and supplements.
                         </p>
@@ -59,7 +59,7 @@ export default function Footer() {
 
                 {/* Bottom section */}
                 <div className="border-t border-gray-700 pt-4 text-center text-black text-sm">
-                    &copy; {new Date().getFullYear()} KH PharmaShop. All rights reserved.
+                    &copy; {new Date().getFullYear()} KH Orchard. All rights reserved.
                 </div>
             </div>
         </footer>
